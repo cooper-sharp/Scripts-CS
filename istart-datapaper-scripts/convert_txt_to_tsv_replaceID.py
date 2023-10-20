@@ -30,12 +30,22 @@ def format_first_row(filename):
             if row and len(row) > 0:
                 # Add "sub-" prefix to the first column
                 row[0] = f'sub-{row[0]}'
-    
 
-    with open(filename, 'w', newline='') as outfile:
-        writer = csv.writer(outfile)
+    with open(filename, 'w', newline='') as infile:
+        writer = csv.writer(infile)
         writer.writerows(rows)
 
+    with open(filename, 'r') as infile:
+                lines = infile.readlines()
+
+    if lines:
+        header = lines[0]
+        header = header.replace(header.split('\t')[0], "participant_id")
+
+    with open(filename, 'w') as infile:
+        infile.write(header)
+        infile.writelines(lines[1:])
+    
 def process_files(folder_path, target_numbers):
     for filename in os.listdir(folder_path):
         if filename.endswith('.txt'):
@@ -45,9 +55,6 @@ def process_files(folder_path, target_numbers):
             with open(file_path, 'r') as infile:
                 reader = csv.reader(infile)
                 rows = list(reader)
-
-            if rows and "ID" in rows[0]:
-                rows[0] = [cell.replace("ID", "participant_id") for cell in rows[0]]
 
             with open(file_path, 'w', newline='') as outfile:
                 writer = csv.writer(outfile)
