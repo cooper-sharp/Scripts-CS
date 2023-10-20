@@ -3,14 +3,14 @@ import pandas as pd
 import csv
 
 
-
+# Read in usable_subs.txt and generate a list of sub-##### to be used for file filtering
 def read_usable_subs(filename):
     with open(filename, 'r') as file:
         usable_subs = [line.strip() for line in file]
     return usable_subs
 
 
-
+# Eliminate any sub-##### that aren't specified in usable_subs.txt
 def eliminate_subs(filename, usable_subs):
     with open(filename, 'r') as file:
         lines = file.readlines()
@@ -25,7 +25,8 @@ def eliminate_subs(filename, usable_subs):
         file.writelines(filtered_data_lines)
 
 
-
+# Format the first column for BIDS specification
+# This function applies "participant_id to the first cell for every measure and applies sub- to the beginning of every ID"
 def format_first_column(filename):
     with open(filename, 'r') as infile:
         reader = csv.reader(infile)
@@ -52,7 +53,7 @@ def format_first_column(filename):
         infile.writelines(lines[1:])
     
 
-
+# Iterate through the .tsv that were generated to elimante unwanted subs and apply BIDS formatting
 def process_files(folder_path, usable_subs):
     for filename in os.listdir(folder_path):
         if filename.endswith('.tsv'):
@@ -72,7 +73,8 @@ def process_files(folder_path, usable_subs):
             print(f"Processed: {file_path}")
 
 
-
+# File converts all .txt files that exist in /rawdata for processing defined above
+# Todo: figure out why the script breaks if I put this about the process_files function 
 def convert_to_tsv(input_path, output_path):
     for filename in os.listdir(input_path):
         if filename.endswith('.txt'):
@@ -85,11 +87,11 @@ def convert_to_tsv(input_path, output_path):
             print(f"Converted: {txt_file_path} to {tsv_file_path}")
 
 
-
+# Specify paths and call functions
 if __name__ == "__main__":
     usable_subs = read_usable_subs('/Users/coopersharp/Desktop/usable_subs.txt')
     input_path = '/Users/coopersharp/Desktop/rawdata'  # Specify the folder path containing the .txt files
-    output_path = '/Users/coopersharp/Desktop/data_paper'
+    output_path = '/Users/coopersharp/Desktop/data_paper' # .tsv output will be generated here
 
     convert_to_tsv(input_path, output_path)
     process_files(output_path, usable_subs)
