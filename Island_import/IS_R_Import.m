@@ -21,7 +21,12 @@ tania_subid = [fn_padded_num, ln_padded_num, dob_num];
 
 %READING THE INPUT
 input_filename = "input.csv";
-input_data = readcell(input_filename);
+input_data = readtable(input_filename);
+
+%REORDER COLUMNS
+output_columns = {template_data(1,:)}
+input_data = input_data(:, output_columns)
+
 
 %READING THE TEMPLATE
 template_filename = "template.csv";
