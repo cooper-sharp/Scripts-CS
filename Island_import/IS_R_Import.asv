@@ -21,11 +21,20 @@ tania_subid = [fn_padded_num, ln_padded_num, dob_num];
 
 %READING THE INPUT
 input_filename = "input.csv";
-input_data = readcell(input_filename);
+input_data = readtable(input_filename);
+
+
 
 %READING THE TEMPLATE
 template_filename = "template.csv";
-template_data =  readcell(template_filename);
+template_data =  readtable(template_filename);
+
+disp(template_data)
+
+%REORDER COLUMNS
+%output_columns = {template_data(1,:)}
+%input_data = input_data(:, output_columns);
+
 
 %GENERATING THE OUTPUT
 %setting the first row of output to = the first row of the template

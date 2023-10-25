@@ -20,21 +20,16 @@ tania_subid = [fn_padded_num, ln_padded_num, dob_num];
 
 
 %READING THE INPUT
-input_filename = "input.csv";
-input_data = readtable(input_filename);
-
-%REORDER COLUMNS
-output_columns = {template_data(1,:)}
-input_data = input_data(:, output_columns)
-
+input_data = readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/input.csv");
 
 %READING THE TEMPLATE
-template_filename = "template.csv";
-template_data =  readcell(template_filename);
+template_file = "/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/template.csv";
+template_data =  readtable(template_file);
 
-%GENERATING THE OUTPUT
-%setting the first row of output to = the first row of the template
-output_data = template_data(1,:);
+target_value = 'dob';
+index = find(srtcmp(template_data{1, :}, target_value))
+
+
 
 %get the index of specified input variable
 name_index = find(strcmp(input_data(1, :), 'dob'));
@@ -44,7 +39,6 @@ value = input_data{2,name_index};
 
 
 
-% Write the output data to a CSV file
-writecell(output_data, 'output.csv');
-
+% % Write the output data to a CSV file
+% writecell(output_data, 'output.csv');
 
