@@ -26,17 +26,23 @@ input_data = readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_impor
 template_file = "/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/template.csv";
 template_data =  readtable(template_file);
 
-target_value = 'dob';
-index = find(srtcmp(template_data{1, :}, target_value))
-
-
 
 %get the index of specified input variable
-name_index = find(strcmp(input_data(1, :), 'dob'));
-%return the variable in the corresponding second row
-value = input_data{2,name_index};
+name_index = find(strcmp(template_data.Properties.VariableNames, 'dob'));
+
+if ~isempty(name_index)
+    % Return the variable in the corresponding second row
+    value = template_data{2, name_index};
+else
+    % Handle the case where 'dob' is not found in the variable names
+    error('Variable "dob" not found in the CSV file.');
+end
 
 
+
+
+% target_value = 'dob';
+% index = find(strcmp(template_data{1, :}, target_value))
 
 
 % % Write the output data to a CSV file
