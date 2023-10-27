@@ -27,24 +27,27 @@ template_file = "/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/templ
 template_data =  readtable(template_file);
 
 
-%get the index of specified input variable
-name_index = find(strcmp(template_data.Properties.VariableNames, 'dob'));
 
-if ~isempty(name_index)
-    % Return the variable in the corresponding second row
-    value = template_data{2, name_index};
-else
-    % Handle the case where 'dob' is not found in the variable names
-    error('Variable "dob" not found in the CSV file.');
+
+% Extract the variable names from the first row of template_data
+templateVarNames = template_data.Properties.VariableNames;
+
+% Initialize an empty cell array for the data
+outputDataCell = cell(1, numel(templateVarNames));
+
+% Loop through the variable names and copy data from input_data if it exists
+for i = 1:numel(templateVarNames)
+    varName = templateVarNames{i};
+    if ismember(varName, input_data.Properties.VariableNames)
+        outputDataCell{i} = input_data{1, varName};
+    else
+        outputDataCell{i} = NaN; % Or any other default value
+    end
 end
 
+% Create the output_data table with the variable names from template_data
+% and data from input_data (where they match)
+output_data = cell2table(outputDataCell, 'VariableNames', templateVarNames);
 
-
-
-% target_value = 'dob';
-% index = find(strcmp(template_data{1, :}, target_value))
-
-
-% % Write the output data to a CSV file
-% writecell(output_data, 'output.csv');
+writetable(output_data, 'output.csv')
 
