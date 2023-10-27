@@ -23,12 +23,10 @@ tania_subid = [fn_padded_num, ln_padded_num, dob_num];
 input_data = readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/input.csv");
 
 %READING THE TEMPLATE
-template_file = "/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/template.csv";
-template_data =  readtable(template_file);
+template_data =  readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/template.csv");
 
 
-
-
+%GENERATING THE OUTPUT
 % Extract the variable names from the first row of template_data
 templateVarNames = template_data.Properties.VariableNames;
 
@@ -48,6 +46,7 @@ end
 % Create the output_data table with the variable names from template_data
 % and data from input_data (where they match)
 output_data = cell2table(outputDataCell, 'VariableNames', templateVarNames);
+
 
 writetable(output_data, 'output.csv')
 
