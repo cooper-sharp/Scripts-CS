@@ -1,30 +1,8 @@
-
-%generate tania_subid
-fn = 'Avi';
-ln = 'Dachs';
-dob = '10/02/2002';
-%get the first letter of their first and last names
-fn_letter = fn(1);
-ln_letter = ln(1);
-%convert letters to corresponding number value
-alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-fn_num = strfind(alphabet,fn_letter);
-ln_num = strfind(alphabet,ln_letter);
-%pad the numbers with 0
-fn_padded_num = sprintf('%02d', fn_num);
-ln_padded_num = sprintf('%02d', ln_num);
-%get the last two digits of their dob
-dob_num = dob(end-1:end);
-%bippity boppity boo
-tania_subid = [fn_padded_num, ln_padded_num, dob_num];
-
-
 %READING THE INPUT
 input_data = readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/input.csv");
 
 %READING THE TEMPLATE
 template_data =  readtable("/Users/avidachs/Documents/GitHub/Scripts-CS/Island_import/template.csv");
-
 
 %GENERATING THE OUTPUT
 % Extract the variable names from the first row of template_data
@@ -38,8 +16,33 @@ for i = 1:numel(templateVarNames)
     varName = templateVarNames{i};
     if ismember(varName, input_data.Properties.VariableNames)
         outputDataCell{i} = input_data{1, varName};
+    elseif strcmp(varName, 'tania_subid')
+        % Generate tania_subid based on sub_fn, sub_ln, and dob
+        fn = input_data.sub_fn{1};
+        ln = input_data.sub_ln{1};
+        dob = input_data.dob(1);
+
+        % Your code to generate tania_subid
+        %get the first letter of their first and last names
+        fn_letter = fn(1);
+        ln_letter = ln(1);
+        %convert letters to corresponding number value
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        fn_num = strfind(alphabet, fn_letter);
+        ln_num = strfind(alphabet, ln_letter);
+        %pad the numbers with 0
+        fn_padded_num = sprintf('%02d', fn_num);
+        ln_padded_num = sprintf('%02d', ln_num);
+        dob = input_data.dob(1); % Ensure it's a string
+        dob = char(dob); % Convert to a character array
+        %get the last two digits of their dob
+        dob_num = dob(end-1:end);
+        % Generate tania_subid
+        tania_subid = [fn_padded_num, ln_padded_num, dob_num];
+
+        outputDataCell{i} = tania_subid;
     else
-        outputDataCell{i} = NaN; % Or any other default value
+        outputDataCell{i} = ""; % Or any other default value
     end
 end
 
@@ -47,6 +50,4 @@ end
 % and data from input_data (where they match)
 output_data = cell2table(outputDataCell, 'VariableNames', templateVarNames);
 
-
 writetable(output_data, 'output.csv')
-
