@@ -58,6 +58,10 @@ for row = 1:height(input_data)
         % Fill date_recontact with today's date
         elseif strcmp(varName, 'date_recontact')
             outputDataCell{row, i} = todayDate;
+        elseif strcmp(varName, 'redcap_event_name')
+            outputDataCell{row, i} = 'subject_informatio_arm_1';
+        elseif strcmp(varName, 'com_contact_step')
+            outputDataCell{row, i} = 2;
         else
             outputDataCell{row, i} = "";
         end
@@ -69,4 +73,4 @@ end
 output_data = cell2table(outputDataCell, 'VariableNames', templateVarNames);
 
 % Write the output_data to 'output.csv'
-writetable(output_data, 'output.csv')
+writetable(output_data, 'output2.csv')
